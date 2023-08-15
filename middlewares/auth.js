@@ -2,7 +2,11 @@ import jwt from "jsonwebtoken";
 import { User } from "../model/userModel.js";
 
 export const isAuthenticated = async(req,res,next) => {
-     const {token} = req.cookies;
+    const bearerHeader = req.headers['authorization'];
+
+    if (typeof bearerHeader !== 'undefined') {
+      const token = bearerHeader.split(' ')[1];
+    //   const {token} = req.cookies;
      if(!token) return res.status(403).json({
         success:false,
         message:"Login first"
@@ -16,4 +20,7 @@ export const isAuthenticated = async(req,res,next) => {
     })
     req.user = user;
     next();
+    } else {
+      res.status(401).json({ error: 'Bearer token missing or invalid' });
+    }
 }

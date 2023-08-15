@@ -10,6 +10,7 @@ export const sendToken = (res,_id,message,statusCode=200,success=true,data) => {
     }).status(statusCode).json({
         success,
         message,
-        data
+        data,
+        token
     })
 }
